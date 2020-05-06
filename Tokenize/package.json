@@ -1,0 +1,17 @@
+{
+  "name": "tokenize",
+  "version": "0.0.0",
+  "description": "Tokenize",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.14",
+    "typescript": "^3.8.3"
+  }
+}
