@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Tokenize"
   ],
+  "SelectedNode": "\\Tokenize\\testharness.ts",
   "PreviewInSolutionExplorer": false
 }
