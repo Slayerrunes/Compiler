@@ -5,6 +5,8 @@ export class Tokenizer {
     grammar: Grammar;
     inputData: string;
     currentLine: number = 1;
+    cur: Token;
+    previousList: Token[] = [];
     idx: number = 0;    //index of next unparsed char in inputData
 
     constructor(grammar: Grammar)
@@ -63,7 +65,15 @@ export class Tokenizer {
                 if (sym !== "WHITESPACE" && sym !== "COMMENT")
                 {
                     //return new Token using sym, lexeme, and line number
-                    return new Token(sym, lexeme, tmp);
+                    this.cur = new Token(sym, lexeme, tmp);
+                    this.previousList.push(this.cur);
+
+                    if (this.previousList.length > 2)
+                    {
+                        this.previousList.shift();
+                    }
+                    return this.cur;
+                    
                 }
                 else
                 {
@@ -75,4 +85,29 @@ export class Tokenizer {
         //no match; syntax error
         throw new Error("Syntax Error!!!")
     }
+
+
+    peek()
+    {
+        let tmpCur: Token = this.cur;
+        let tmpLine: number = this.currentLine;
+        let tmpList: Token[] = this.previousList;
+        let tmpIdx = this.idx;
+        let tmpNext = this.next();
+        this.cur = tmpCur;
+        this.currentLine = tmpLine;
+        this.previousList = tmpList;
+        this.idx = tmpIdx;
+        return tmpNext;
+    }
+
+    previous(): Token
+    {
+        if (this.previousList.length < 2)
+        {
+            return undefined;
+        }
+        return this.previousList[this.previousList.length - 2];
+    }
+
 }

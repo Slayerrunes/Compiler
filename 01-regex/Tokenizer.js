@@ -4,6 +4,7 @@ const Token_1 = require("./Token");
 class Tokenizer {
     constructor(grammar) {
         this.currentLine = 1;
+        this.previousList = [];
         this.idx = 0; //index of next unparsed char in inputData
         this.grammar = grammar;
         let addWhitespace = true;
@@ -44,7 +45,12 @@ class Tokenizer {
                 this.currentLine += lexeme.split('\n').length - 1;
                 if (sym !== "WHITESPACE" && sym !== "COMMENT") {
                     //return new Token using sym, lexeme, and line number
-                    return new Token_1.Token(sym, lexeme, tmp);
+                    this.cur = new Token_1.Token(sym, lexeme, tmp);
+                    this.previousList.push(this.cur);
+                    if (this.previousList.length > 2) {
+                        this.previousList.shift();
+                    }
+                    return this.cur;
                 }
                 else {
                     //skip whitespace and get next real token
@@ -54,6 +60,24 @@ class Tokenizer {
         }
         //no match; syntax error
         throw new Error("Syntax Error!!!");
+    }
+    peek() {
+        let tmpCur = this.cur;
+        let tmpLine = this.currentLine;
+        let tmpList = this.previousList;
+        let tmpIdx = this.idx;
+        let tmpNext = this.next();
+        this.cur = tmpCur;
+        this.currentLine = tmpLine;
+        this.previousList = tmpList;
+        this.idx = tmpIdx;
+        return tmpNext;
+    }
+    previous() {
+        if (this.previousList.length < 2) {
+            return undefined;
+        }
+        return this.previousList[this.previousList.length - 2];
     }
 }
 exports.Tokenizer = Tokenizer;

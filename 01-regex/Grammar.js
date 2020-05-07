@@ -76,7 +76,7 @@ class Grammar {
         if (set !== undefined) {
             set.forEach(def => {
                 if (!used.has(def)) {
-                    throw new Error(def + " is defined, but isn't used...");
+                    //throw new Error(def + " is defined, but isn't used...");
                 }
             });
         }

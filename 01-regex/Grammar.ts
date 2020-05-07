@@ -54,7 +54,7 @@ export class Grammar
     {
         let set: Set<string> = new Set();
         let input = gram.split("\n\n");
-
+        
         let terms = input[0].split("\n");
         let nonterms = input[1].split("\n");
 
@@ -154,7 +154,7 @@ export class Grammar
             {
                 if (!used.has(def))
                 {
-                    throw new Error(def + " is defined, but isn't used...");
+                    //throw new Error(def + " is defined, but isn't used...");
                 }
             });
         }

@@ -33,7 +33,6 @@
     <None Include="app.ts" />
     <Content Include="package.json" />
     <Content Include="README.md" />
-    <Content Include="tests.txt" />
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +42,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Token.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="TreeNode.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Shuntingyard.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>
