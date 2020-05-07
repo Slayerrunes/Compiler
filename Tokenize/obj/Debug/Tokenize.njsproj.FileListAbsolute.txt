@@ -1,2 +1,0 @@
-C:\Users\weary\Source\Repos\Slayerrunes\Compiler\Tokenize\obj\Debug\Tokenize.njsprojAssemblyReference.cache
-C:\Users\weary\Source\Repos\Slayerrunes\Compiler\Tokenize\bin\Microsoft.NodejsTools.WebRole.dll
