@@ -14,7 +14,7 @@ function main(){
     let tests = JSON.parse(teststr);
     let G: Grammar;
 
-    for(let i=0;i<tests.length;++i){
+    for(let i=0;i<tests.length;++i){ 
         console.log("Test "+i);
         let spec = tests[i]["spec"];
         let valid = tests[i]["valid"];
