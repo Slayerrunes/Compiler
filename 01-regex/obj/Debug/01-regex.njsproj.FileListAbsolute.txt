@@ -1,0 +1,4 @@
+C:\Users\weary\source\repos\01-regex\01-regex\obj\Debug\01-regex.njsprojAssemblyReference.cache
+C:\Users\weary\source\repos\01-regex\01-regex\bin\Microsoft.NodejsTools.WebRole.dll
+C:\Users\weary\Source\Repos\Slayerrunes\Compiler\01-regex\obj\Debug\01-regex.njsprojAssemblyReference.cache
+C:\Users\weary\Source\Repos\Slayerrunes\Compiler\01-regex\bin\Microsoft.NodejsTools.WebRole.dll
