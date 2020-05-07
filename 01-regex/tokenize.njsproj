@@ -7,7 +7,7 @@
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
     <NodeExeArguments>
     </NodeExeArguments>
-    <Environment> </Environment>
+    <Environment>C:\Users\weary\source\repos\asm\01-regex\antlr4</Environment>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -41,6 +41,10 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="ASM.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="exetools.ts" />
     <TypeScriptCompile Include="Grammar.ts" />
     <TypeScriptCompile Include="Parser.ts">
       <SubType>Code</SubType>
