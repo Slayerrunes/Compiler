@@ -1,46 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 let fs = require("fs");
-const Grammar_1 = require("./Grammar");
+const parser_1 = require("./parser");
 function main() {
-    let data = fs.readFileSync("tests.txt", "utf8");
-    let tests = JSON.parse(data);
-    let numPassed = 0;
-    let numFailed = 0;
-    for (let i = 0; i < tests.length; ++i) {
-        let name = tests[i]["name"];
-        let expected = tests[i]["nullable"];
-        let input = tests[i]["input"];
-        let G = new Grammar_1.Grammar(input);
-        let nullable = G.getNullable();
-        if (!setsAreSame(nullable, expected)) {
-            console.log("Test " + name + " failed");
-            ++numFailed;
-        }
-        else
-            ++numPassed;
+    let inp = fs.readFileSync("input1.txt", "utf8");
+    let root = parser_1.parse(inp);
+    fs.writeFileSync("tree.dot", root);
+    console.log("Wrote tree.dot");
+    inp = fs.readFileSync("input3.txt", "utf8");
+    root = parser_1.parse(inp);
+    fs.writeFileSync("tree3.dot", root);
+    console.log("Wrote tree3.dot");
+    try {
+        inp = fs.readFileSync("input2.txt", "utf8");
+        root = parser_1.parse(inp);
+        console.log("Accepted invalid input2.txt");
     }
-    console.log(numPassed + " tests OK" + "      " + numFailed + " tests failed");
-    return numFailed == 0;
-}
-function setsAreSame(s1, s2) {
-    let L1 = [];
-    let L2 = [];
-    s1.forEach((x) => {
-        L1.push(x);
-    });
-    s2.forEach((x) => {
-        L2.push(x);
-    });
-    L1.sort();
-    L2.sort();
-    if (L1.length !== L2.length)
-        return false;
-    for (let i = 0; i < L1.length; ++i) {
-        if (L1[i] !== L2[i])
-            return false;
+    catch (e) {
+        console.log("Rejected invalid input2.txt: Good.");
     }
-    return true;
 }
 main();
 //# sourceMappingURL=testharness.js.map

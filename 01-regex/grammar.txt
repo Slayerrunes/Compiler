@@ -1,0 +1,62 @@
+COMMENT -> //[^\n]*
+SEMI -> ;
+WHILE -> \bwhile\b
+LP -> [(]
+RP -> [)]
+IF -> \bif\b
+ELSE -> \belse\b
+RETURN -> \breturn\b
+LBR -> [{]
+RBR -> [}]
+FPNUM -> (\d+\.\d*|\.\d+)([Ee][-+]?\d+)?|-?\d+[Ee][-+]?\d+
+NUM -> \d+
+OR -> \bor\b
+AND -> \band\b
+NOT -> \bnot\b
+RELOP -> >=|<=|>|<|!=|==
+EQ -> =
+PLUS -> [+]
+MULOP -> [*/%]
+MINUS -> -
+LP -> [(]
+RP -> [)]
+CMA -> ,
+TYPE -> \b(int|string|double)\b
+STRING-CONSTANT -> "(\\"|\\n|\\\\|[^"])*"
+PRINT -> \bprint\b
+INPUT -> \binput\b
+OPEN -> \bopen\b
+READ -> \bread\b
+WRITE -> \bwrite\b
+CLOSE -> \bclose\b
+ID -> [A-Za-z_]\w*
+
+program -> var-decl-list braceblock
+stmts -> stmt stmts | lambda
+stmt -> cond | loop | return-stmt SEMI | assign SEMI | func-call SEMI
+loop -> WHILE LP expr RP braceblock
+cond -> IF LP expr RP braceblock | IF LP expr RP braceblock ELSE braceblock
+braceblock -> LBR stmts RBR
+return-stmt -> RETURN expr
+expr -> orexp
+orexp -> orexp OR andexp | andexp 
+andexp -> andexp AND notexp | notexp
+notexp ->  NOT notexp | rel
+rel -> sum RELOP sum | sum
+sum ->  sum PLUS term | sum MINUS term | term
+term ->  term MULOP neg | neg
+neg ->  MINUS neg | factor
+factor ->  NUM | LP expr RP | FPNUM | ID | STRING-CONSTANT | func-call
+var-decl-list -> var-decl SEMI var-decl-list | lambda
+var-decl -> TYPE ID
+assign -> ID EQ expr
+func-call -> builtin-func-call | user-func-call
+user-func-call -> ID LP optional-exprlist RP
+optional-exprlist -> lambda | exprlist
+exprlist -> exprlist CMA expr | expr
+builtin-func-call -> PRINT LP expr RP
+builtin-func-call -> INPUT LP RP
+builtin-func-call -> OPEN LP expr RP
+builtin-func-call -> READ LP expr RP
+builtin-func-call -> WRITE LP expr CMA expr RP
+builtin-func-call -> CLOSE LP expr RP

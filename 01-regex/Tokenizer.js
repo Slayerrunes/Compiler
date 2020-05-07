@@ -29,7 +29,7 @@ class Tokenizer {
     next() {
         if (this.idx >= this.inputData.length) {
             //special "end of file" metatoken
-            return new Token_1.Token("$", undefined, this.currentLine);
+            return new Token_1.Token("$", this.currentLine, undefined);
         }
         for (let i = 0; i < this.grammar.terminals.length; ++i) {
             let terminal = this.grammar.terminals[i];
@@ -45,7 +45,7 @@ class Tokenizer {
                 this.currentLine += lexeme.split('\n').length - 1;
                 if (sym !== "WHITESPACE" && sym !== "COMMENT") {
                     //return new Token using sym, lexeme, and line number
-                    this.cur = new Token_1.Token(sym, lexeme, tmp);
+                    this.cur = new Token_1.Token(sym, tmp, lexeme);
                     this.previousList.push(this.cur);
                     if (this.previousList.length > 2) {
                         this.previousList.shift();

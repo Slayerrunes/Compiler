@@ -44,7 +44,7 @@ export class Tokenizer {
         if (this.idx >= this.inputData.length)
         {
             //special "end of file" metatoken
-            return new Token("$", undefined, this.currentLine)
+            return new Token("$", this.currentLine, undefined)
         }
         for (let i = 0; i < this.grammar.terminals.length; ++i)
         {
@@ -65,7 +65,7 @@ export class Tokenizer {
                 if (sym !== "WHITESPACE" && sym !== "COMMENT")
                 {
                     //return new Token using sym, lexeme, and line number
-                    this.cur = new Token(sym, lexeme, tmp);
+                    this.cur = new Token(sym, tmp, lexeme);
                     this.previousList.push(this.cur);
 
                     if (this.previousList.length > 2)

@@ -2,15 +2,13 @@ export class Token {
     sym: string;
     lexeme: string;
     line: number;
-    constructor(sym: string, lexeme: string, line: number) {
+    constructor(sym: string, line: number, lexeme: string) {
         this.sym = sym;
         this.lexeme = lexeme;
         this.line = line;
     }
     toString() {
-        let sym = this.sym.padStart(20, ' ');
-        let line = "" + this.line;
-        line = line.padEnd(4, ' ');
-        return `[${sym} ${line} ${this.lexeme}]`;
+        
+        return `[${this.sym} ${this.line} ${this.lexeme}]`;
     }
 }
