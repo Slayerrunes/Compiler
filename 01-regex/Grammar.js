@@ -10,10 +10,25 @@ class Grammar {
     constructor(gram) {
         this.nonTerminals = [];
         this.terminals = [];
+        this.nullable = new Set();
         let set = new Set();
-        let input = gram.split("\n\n");
-        let terms = input[0].split("\n");
-        let nonterms = input[1].split("\n");
+        let input = gram.split("\n");
+        let isTerm = true;
+        let terms = [];
+        let nonterms = [];
+        input.forEach(x => {
+            if (x.length != 0) {
+                if (isTerm) {
+                    terms.push(x);
+                }
+                else {
+                    nonterms.push(x);
+                }
+            }
+            else {
+                isTerm = false;
+            }
+        });
         for (let i = 0; i < terms.length; i++) {
             if (terms[i].length == 0) {
                 continue;
@@ -67,7 +82,7 @@ class Grammar {
             else if (!set.has(ID[0])) {
                 set.add(ID[0]);
             }
-            console.log(set);
+            //console.log(set);
             this.nonTerminals[i] = [ID[0], ID[1]];
         }
         let used = new Set();
@@ -83,7 +98,7 @@ class Grammar {
         if (used != undefined) {
             used.forEach(use => {
                 if (use !== '' && !set.has(use)) {
-                    throw new Error(use + " is used, but isn't defined...");
+                    //throw new Error(use + " is used, but isn't defined...");
                 }
             });
         }
@@ -110,6 +125,30 @@ class Grammar {
                 }
             });
         }
+    }
+    getNullable() {
+        this.nullable = new Set();
+        let cont;
+        while (true) {
+            cont = true;
+            this.nonTerminals.forEach(x => {
+                console.log(x);
+                if (!this.nullable.has(x[0])) {
+                    let productions = x[1].split("|");
+                    productions.forEach(j => {
+                        let tmp = j.trim().split(" ");
+                        if (tmp.every(y => this.nullable.has(y) || y == "lambda")) {
+                            this.nullable.add(x[0]);
+                            cont = false;
+                        }
+                    });
+                }
+            });
+            if (cont) {
+                break;
+            }
+        }
+        return this.nullable;
     }
 }
 exports.Grammar = Grammar;
