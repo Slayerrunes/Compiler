@@ -2,29 +2,20 @@ default rel
 section .text
 global main
 main:
-push qword 1
-mov rax, __float64__(2.999)
-push rax
-movq xmm0, [rsp]
-add rsp, 8
-roundsd xmm0, xmm0, 0xb
-cvtsd2si rax, xmm0
-push rax
-pop rbx
+push qword 0
 pop rax
-add rax, rbx
-push rax
-mov rax, __float64__(3.5)
-push rax
-movq xmm0, [rsp]
-add rsp, 8
-roundsd xmm0, xmm0, 0xb
-cvtsd2si rax, xmm0
-push rax
-pop rbx
+cmp rax, 0
+je lbl0
+push qword 34
 pop rax
-add rax, rbx
-push rax
+ret
+jmp lbl1
+lbl0:
+push qword 78
+pop rax
+ret
+lbl1:
+push qword 56
 pop rax
 ret
 ret
