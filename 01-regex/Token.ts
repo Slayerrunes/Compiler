@@ -9,6 +9,6 @@ export class Token {
     }
     toString() {
         
-        return `[${this.sym} ${this.line} ${this.lexeme}]`;
+        return `${this.sym} ${this.line} ${this.lexeme}`;
     }
 }

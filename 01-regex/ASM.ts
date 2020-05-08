@@ -8,7 +8,8 @@ function ICE()
 {
     throw new Error("Internal Compiler Error!!!");
 }
-function emit(instr: string) {
+function emit(instr: string)
+{
     asmCode.push(instr);
 }
 function programNodeCode(n: TreeNode)

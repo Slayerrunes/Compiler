@@ -7,7 +7,7 @@ class Token {
         this.line = line;
     }
     toString() {
-        return `[${this.sym} ${this.line} ${this.lexeme}]`;
+        return `${this.sym} ${this.line} ${this.lexeme}`;
     }
 }
 exports.Token = Token;

@@ -290,4 +290,3 @@ gramLexer.prototype.grammarFileName = "gram.txt";
 
 
 exports.gramLexer = gramLexer;
-
