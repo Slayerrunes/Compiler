@@ -56,12 +56,12 @@ gramListener.prototype.exitCond = function(ctx) {
 };
 
 
-// Enter a parse tree produced by gramParser#braceBlock.
-gramListener.prototype.enterBraceBlock = function(ctx) {
+// Enter a parse tree produced by gramParser#braceblock.
+gramListener.prototype.enterBraceblock = function(ctx) {
 };
 
-// Exit a parse tree produced by gramParser#braceBlock.
-gramListener.prototype.exitBraceBlock = function(ctx) {
+// Exit a parse tree produced by gramParser#braceblock.
+gramListener.prototype.exitBraceblock = function(ctx) {
 };
 
 
@@ -152,78 +152,6 @@ gramListener.prototype.enterFactor = function(ctx) {
 
 // Exit a parse tree produced by gramParser#factor.
 gramListener.prototype.exitFactor = function(ctx) {
-};
-
-
-// Enter a parse tree produced by gramParser#varDecllist.
-gramListener.prototype.enterVarDecllist = function(ctx) {
-};
-
-// Exit a parse tree produced by gramParser#varDecllist.
-gramListener.prototype.exitVarDecllist = function(ctx) {
-};
-
-
-// Enter a parse tree produced by gramParser#varDecl.
-gramListener.prototype.enterVarDecl = function(ctx) {
-};
-
-// Exit a parse tree produced by gramParser#varDecl.
-gramListener.prototype.exitVarDecl = function(ctx) {
-};
-
-
-// Enter a parse tree produced by gramParser#assign.
-gramListener.prototype.enterAssign = function(ctx) {
-};
-
-// Exit a parse tree produced by gramParser#assign.
-gramListener.prototype.exitAssign = function(ctx) {
-};
-
-
-// Enter a parse tree produced by gramParser#funcCall.
-gramListener.prototype.enterFuncCall = function(ctx) {
-};
-
-// Exit a parse tree produced by gramParser#funcCall.
-gramListener.prototype.exitFuncCall = function(ctx) {
-};
-
-
-// Enter a parse tree produced by gramParser#userFuncCall.
-gramListener.prototype.enterUserFuncCall = function(ctx) {
-};
-
-// Exit a parse tree produced by gramParser#userFuncCall.
-gramListener.prototype.exitUserFuncCall = function(ctx) {
-};
-
-
-// Enter a parse tree produced by gramParser#optionalExprlist.
-gramListener.prototype.enterOptionalExprlist = function(ctx) {
-};
-
-// Exit a parse tree produced by gramParser#optionalExprlist.
-gramListener.prototype.exitOptionalExprlist = function(ctx) {
-};
-
-
-// Enter a parse tree produced by gramParser#exprlist.
-gramListener.prototype.enterExprlist = function(ctx) {
-};
-
-// Exit a parse tree produced by gramParser#exprlist.
-gramListener.prototype.exitExprlist = function(ctx) {
-};
-
-
-// Enter a parse tree produced by gramParser#builtinFuncCall.
-gramListener.prototype.enterBuiltinFuncCall = function(ctx) {
-};
-
-// Exit a parse tree produced by gramParser#builtinFuncCall.
-gramListener.prototype.exitBuiltinFuncCall = function(ctx) {
 };
 
 

@@ -1,5 +1,6 @@
 import { TreeNode } from "./TreeNode";
 import { Token } from "./Token";
+import { makeAsm } from "./ASM"
 
 declare var require: any;
 let antlr4 = require('./antlr4');
@@ -7,7 +8,8 @@ let Lexer = require('./gramLexer.js').gramLexer;
 let Parser = require('./gramParser.js').gramParser;
 
 
-export function parse(txt: string) {
+export function parse(txt: string)
+{
     let stream = new antlr4.InputStream(txt);
     let lexer = new Lexer(stream);
     let tokens = new antlr4.CommonTokenStream(lexer);
@@ -24,11 +26,12 @@ export function parse(txt: string) {
     let antlrroot = parser.program();
 
     let root: TreeNode = walk(parser, antlrroot);
-    return root.toString();
+    return makeAsm(root);
 
 }
 
-function walk(parser: any, node: any) {
+function walk(parser: any, node: any)
+{
     let p: any = node.getPayload();
     if (p.ruleIndex === undefined) {
         let line: number = p.line;

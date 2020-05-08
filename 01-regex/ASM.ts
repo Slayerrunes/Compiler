@@ -14,7 +14,8 @@ function ICE()
 {
     throw new Error("Internal Compiler Error!!!");
 }
-function emit(instr: string) {
+function emit(instr: string)
+{
     asmCode.push(instr);
 }
 function programNodeCode(n: TreeNode)
@@ -24,7 +25,7 @@ function programNodeCode(n: TreeNode)
     {
         ICE();
     }
-        
+
     braceblockNodeCode(n.children[0]);
 }
 function braceblockNodeCode(n: TreeNode)
@@ -39,7 +40,7 @@ function stmtsNodeCode(n: TreeNode)
     {
         return;
     }
-        
+
     stmtNodeCode(n.children[0]);
     stmtsNodeCode(n.children[1]);
 }
@@ -48,8 +49,7 @@ function stmtNodeCode(n: TreeNode)
     //stmt -> cond | loop | return-stmt SEMI
     let c = n.children[0];
 
-    switch (c.sym)
-    {
+    switch (c.sym) {
         case "cond":
             condNodeCode(c); break;
         case "loop":
@@ -61,7 +61,8 @@ function stmtNodeCode(n: TreeNode)
     }
 }
 
-function negNodeCode(n: TreeNode): VarType {
+function negNodeCode(n: TreeNode): VarType
+{
     //neg :  MINUS neg | factor;
     if (n.children.length === 1)
     {
@@ -70,16 +71,14 @@ function negNodeCode(n: TreeNode): VarType {
     else
     {
         let negType = negNodeCode(n.children[1]);
-        if (negType === VarType.INTEGER)
-        {
+        if (negType === VarType.INTEGER) {
             emit("pop rbx");
             emit("mov qword rax, 0");
             emit("sub rax, rbx");
             emit("push rax");
             return VarType.INTEGER;
         }
-        else if (negType === VarType.FLOAT)
-        {
+        else if (negType === VarType.FLOAT) {
             emit("movq xmm1, [rsp]");
             emit("xorps xmm0, xmm0");
             emit("subsd xmm0, xmm1");
@@ -89,12 +88,12 @@ function negNodeCode(n: TreeNode): VarType {
     }
 }
 
-function termNodeCode(n: TreeNode): VarType {
+function termNodeCode(n: TreeNode): VarType
+{
     //term :  term MULOP neg | neg;
-    if (n.children.length === 1)
-    {
+    if (n.children.length === 1) {
         return negNodeCode(n.children[0]);
-    }  
+    }
     else
     {
         let termType = termNodeCode(n.children[0])
@@ -164,23 +163,20 @@ function termNodeCode(n: TreeNode): VarType {
     }
 }
 
-function sumNodeCode(n: TreeNode): VarType {
+function sumNodeCode(n: TreeNode): VarType
+{
     //sum -> sum PLUS term | sum MINUS term | term
-    if (n.children.length === 1)
-    {
+    if (n.children.length === 1) {
         return termNodeCode(n.children[0]);
     }
-    else
-    {
+    else {
         let sumType = sumNodeCode(n.children[0]);
         let termType = termNodeCode(n.children[2]);
-        if (sumType !== termType)
-        {
+        if (sumType !== termType) {
             throw new Error("sumNodeCode");
         }
         let str: string;
-        if (sumType === VarType.FLOAT)
-        {
+        if (sumType === VarType.FLOAT) {
             if (n.children[1].sym === "PLUS")
                 str = "addsd";
             else if (n.children[1].sym === "MINUS")
@@ -193,18 +189,15 @@ function sumNodeCode(n: TreeNode): VarType {
             emit("sub rsp, 8");
             emit("movq [rsp], xmm0");
         }
-        else if (sumType === VarType.INTEGER)
-        {
-            if (n.children[1].sym === "PLUS")
-            {
+        else if (sumType === VarType.INTEGER) {
+            if (n.children[1].sym === "PLUS") {
                 str = "add";
             }
 
-            else if (n.children[1].sym === "MINUS")
-            {
+            else if (n.children[1].sym === "MINUS") {
                 str = "sub";
             }
-                
+
             emit("pop rbx");    //second operand
             emit("pop rax");    //first operand
             emit(str + " rax, rbx");
@@ -214,18 +207,14 @@ function sumNodeCode(n: TreeNode): VarType {
         return sumType;
     }
 }
-function relNodeCode(n: TreeNode, ): VarType
-{
-    if (n.children.length === 1)
-    {
+function relNodeCode(n: TreeNode, ): VarType {
+    if (n.children.length === 1) {
         return sumNodeCode(n.children[0]);
     }
-    else
-    {
+    else {
         let sum1Type = sumNodeCode(n.children[0]);
         let sum2Type = sumNodeCode(n.children[2]);
-        if (sum1Type !== sum2Type)
-        {
+        if (sum1Type !== sum2Type) {
             throw new Error("relnodecode")
         }
         emit("pop rax");    //second operand
@@ -249,30 +238,25 @@ function relNodeCode(n: TreeNode, ): VarType
         return VarType.INTEGER;
     }
 }
-function convertStackTopToZeroOrOneInteger(type: VarType)
-{
-    if (type == VarType.INTEGER)
-    {
+function convertStackTopToZeroOrOneInteger(type: VarType) {
+    if (type == VarType.INTEGER) {
         emit("cmp qword [rsp], 0");
         emit("setne al");
         emit("movzx rax, al");
         emit("mov [rsp], rax");
     }
-    else if (type == VarType.FLOAT)
-    {
+    else if (type == VarType.FLOAT) {
         emit("xorpd xmm1, xmm1");
         emit("movq xmm0, [rsp]");
         emit("cmpneqsd xmm0, xmm1");
         emit("movq [rsp], xmm0");
         emit("and qword [rsp], 1")
     }
-    else
-    {
+    else {
         throw new Error("convertStackTop");
     }
 }
-function notexpNodeCode(n: TreeNode): VarType
-{
+function notexpNodeCode(n: TreeNode): VarType {
     //notexp :  NOT notexp | rel;
     if (n.children.length === 1)
         return relNodeCode(n.children[0]);
@@ -293,15 +277,12 @@ function notexpNodeCode(n: TreeNode): VarType
         return VarType.INTEGER;
     }
 }
-function andexpNodeCode(n: TreeNode): VarType
-{
+function andexpNodeCode(n: TreeNode): VarType {
     //andexp : andexp AND notexp | notexp;
-    if (n.children.length === 1)
-    {
+    if (n.children.length === 1) {
         return notexpNodeCode(n.children[0]);
     }
-    else
-    {
+    else {
         let lbl = label();
         let andexpType = andexpNodeCode(n.children[0]);
         convertStackTopToZeroOrOneInteger(andexpType);
@@ -314,15 +295,12 @@ function andexpNodeCode(n: TreeNode): VarType
         return VarType.INTEGER;
     }
 }
-function orexpNodeCode(n: TreeNode): VarType
-{
+function orexpNodeCode(n: TreeNode): VarType {
     //orexp -> orexp OR andexp | andexp
-    if (n.children.length === 1)
-    {
+    if (n.children.length === 1) {
         return andexpNodeCode(n.children[0]);
     }
-    else
-    {
+    else {
         let lbl = label();
         let orexpType = orexpNodeCode(n.children[0]);
         convertStackTopToZeroOrOneInteger(orexpType);
@@ -335,12 +313,10 @@ function orexpNodeCode(n: TreeNode): VarType
         return VarType.INTEGER;
     }
 }
-function exprNodeCode(n: TreeNode): VarType
-{
+function exprNodeCode(n: TreeNode): VarType {
     return orexpNodeCode(n.children[0]);
 }
-function condNodeCode(n: TreeNode)
-{
+function condNodeCode(n: TreeNode) {
     //cond -> IF LP expr RP braceblock |
     //  IF LP expr RP braceblock ELSE braceblock
 
@@ -380,52 +356,43 @@ function loopNodeCode(n: TreeNode) {
     emit(`jmp ${start}`);
     emit(`${end}:`);
 }
-function label()
-{
+function label() {
     let s = "lbl" + labelCounter;
     labelCounter++;
     return s;
 }
-function returnstmtNodeCode(n: TreeNode)
-{
+function returnstmtNodeCode(n: TreeNode) {
     //return-stmt -> RETURN expr
     let exprType = exprNodeCode(n.children[1]);
-    if (exprType === VarType.FLOAT)
-    {
+    if (exprType === VarType.FLOAT) {
         emit("movq xmm0, [rsp]");
         emit("add rsp, 8");
         emit("cvtsd2si rax, xmm0")
     }
-    else
-    {
+    else {
         emit("pop rax");
     }
 
 
     emit("ret");
 }
-function factorNodeCode(n: TreeNode): VarType
-{
+function factorNodeCode(n: TreeNode): VarType {
     //factor -> NUM | LP expr RP
     let child = n.children[0];
     console.log(n);
-    switch (child.sym)
-    {
+    switch (child.sym) {
         case "NUM":
             let v = parseInt(child.token.lexeme, 10);
             emit(`push qword ${v}`)
             return VarType.INTEGER;
         case "LP":
-            if (n.children.length === 3)
-            {
+            if (n.children.length === 3) {
                 return exprNodeCode(n.children[1]);
-            } 
-            else if (n.children.length === 4)
-            {
+            }
+            else if (n.children.length === 4) {
                 let f = n.children[1].token.lexeme;
                 let factorType = factorNodeCode(n.children[3]);
-                if (f === "int" && factorType === VarType.FLOAT)
-                {
+                if (f === "int" && factorType === VarType.FLOAT) {
                     emit("movq xmm0, [rsp]")
                     emit("add rsp, 8");
                     emit("roundsd xmm0, xmm0, 0xb");
@@ -433,8 +400,7 @@ function factorNodeCode(n: TreeNode): VarType
                     emit("push rax");
                     return VarType.INTEGER;
                 }
-                else if (f === "double" && factorType === VarType.INTEGER)
-                {
+                else if (f === "double" && factorType === VarType.INTEGER) {
                     emit("pop rax");
                     emit("cvtsi2sd xmm0, rax");
                     emit("sub rsp, 8");
@@ -443,15 +409,13 @@ function factorNodeCode(n: TreeNode): VarType
                     return VarType.FLOAT;
 
                 }
-                else
-                {
+                else {
                     return factorType;
                 }
             }
         case "FPNUM":
             let f = parseFloat(child.token.lexeme).toString();
-            if (!f.includes("."))
-            {
+            if (!f.includes(".")) {
                 f += ".0";
             }
 

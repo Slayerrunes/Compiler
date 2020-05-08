@@ -1,24 +1,19 @@
 import { Token } from "./Token"
 
-export class TreeNode
-{
+export class TreeNode {
     sym: string;
     token: Token;
     children: TreeNode[];
-    constructor(sym: string, token: Token)
-    {
+    constructor(sym: string, token: Token) {
         this.sym = sym;
         this.token = token;
         this.children = [];
     }
 
-    toString()
-    {
-        function walk(x: any, callback: any)
-        {
+    toString() {
+        function walk(x: any, callback: any) {
             callback(x);
-            x.children.forEach((j: any) =>
-            {
+            x.children.forEach((j: any) => {
                 walk(j, callback);
             });
         }
@@ -41,10 +36,8 @@ export class TreeNode
             temp.push(`${n.NUMBER} [label=<${i}>];`);
         });
 
-        walk(this, (n: any) =>
-        {
-            n.children.forEach((x: any) =>
-            {
+        walk(this, (n: any) => {
+            n.children.forEach((x: any) => {
                 temp.push(`${n.NUMBER} -> ${x.NUMBER};`);
             });
         });
