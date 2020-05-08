@@ -53,6 +53,7 @@
     <TypeScriptCompile Include="Token.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Tokenizer.ts" />
     <TypeScriptCompile Include="TreeNode.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
